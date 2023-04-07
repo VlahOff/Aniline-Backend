@@ -4,7 +4,7 @@ const express = require('express');
 const databaseConfig = require('./configs/database');
 
 const tokenParser = require('./middlewares/tokenParser');
-const { isUser } = require('./middlewares/guards');
+const { isAuthenticated, isCorrectOrigin } = require('./middlewares/guards');
 const cors = require('./middlewares/cors');
 
 const cryptoController = require('./controllers/cryptoController');
@@ -18,11 +18,12 @@ async function start() {
 	app.use(cors());
 	app.use(express.json());
 	app.use(tokenParser());
+	app.use(isCorrectOrigin());
 
 	const connectToDB = databaseConfig();
 
 	app.use('/crypto', cryptoController);
-	app.use('/portfolio', isUser(), portfolioController);
+	app.use('/portfolio', isAuthenticated(), portfolioController);
 
 	app.get('/', (req, res) => {
 		res.status(200).send('It works!');
