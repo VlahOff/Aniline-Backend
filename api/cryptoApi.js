@@ -5,9 +5,7 @@ const cmcHostVOne = 'https://pro-api.coinmarketcap.com/v1/';
 const cmcHostVTwo = 'https://pro-api.coinmarketcap.com/v2/';
 
 const CMC_API_KEY = process.env.CMC_API_KEY;
-const cmcHeaders = {
-	'X-CMC_PRO_API_KEY': CMC_API_KEY
-};
+const cmcHeaders = { 'X-CMC_PRO_API_KEY': CMC_API_KEY };
 
 const cryptoApi = {
 	getGlobal: async () => {
@@ -77,8 +75,28 @@ const cryptoApi = {
 		return chart;
 	},
 
-	getTopHundred: async () => {
-		const t = await axios.get(cgHost + 'coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d');
+	getCoinOHLC: async (id, days) => {
+		const t = await axios.get(cgHost + `coins/${id}/ohlc?vs_currency=usd&days=${days || 1}`);
+		const chart = [];
+
+		t.data.forEach(x => {
+			const time = x[0];
+			const open = x[1];
+			const high = x[2];
+			const low = x[3];
+			const close = x[4];
+
+			chart.push({
+				x: new Date(time),
+				y: [open, high, low, close]
+			});
+		});
+
+		return chart;
+	},
+
+	getTopHundred: async (page = 1) => {
+		const t = await axios.get(cgHost + `coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=${page}&sparkline=false&price_change_percentage=1h%2C24h%2C7d`);
 
 		const data = [];
 		t.data.forEach((t) => {
@@ -99,8 +117,8 @@ const cryptoApi = {
 		return data;
 	},
 
-	newCoinsToday: async () => {
-		const t = await axios.get(cmcHostVOne + 'cryptocurrency/listings/latest?sort=date_added', { 'headers': cmcHeaders });
+	newCoinsToday: async (page = 1) => {
+		const t = await axios.get(cmcHostVOne + `cryptocurrency/listings/latest?sort=date_added&start=${page}`, { 'headers': cmcHeaders });
 		const coinData = t.data.data;
 
 		const ids = [];

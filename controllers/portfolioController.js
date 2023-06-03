@@ -1,6 +1,7 @@
 const { getCoinDetailed } = require('../api/cryptoApi');
 const { createTransaction, getAllUserTransactions, deleteTransaction, editTransaction } = require('../service/transactionService');
 const errorParser = require('../utils/errorParser');
+const { body, validationResult } = require('express-validator');
 
 const portfolioController = require('express').Router();
 
@@ -15,58 +16,67 @@ portfolioController.get('/getTransactions', async (req, res) => {
   }
 });
 
-portfolioController.post('/addTransaction', async (req, res) => {
-  try {
-    if (req.body.data.coinId === '') {
-      throw new Error('ENTER_COIN_ID');
+portfolioController.post('/addTransaction',
+  body('transaction.coinId')
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage('ENTER_COIN_ID'),
+  body('transaction.coinPrice')
+    .trim()
+    .isFloat({ gt: 0 })
+    .withMessage('COIN_PRICE_NOT_POSITIVE'),
+  body('transaction.quantity')
+    .trim()
+    .isFloat({ gt: 0 })
+    .withMessage('QUANTITY_LEAST_ONES'),
+  async (req, res) => {
+    try {
+      const { errors } = validationResult(req);
+      if (errors.length > 0) {
+        throw errors;
+      }
+
+      await createTransaction(req.body.transaction, req.user.userId);
+
+      const result = await getDetailedTransactions(req.user.userId);
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(400).json({
+        message: errorParser(error)
+      });
     }
+  });
 
-    if (req.body.data.coinPrice <= 0) {
-      throw new Error('COIN_PRICE_NOT_POSITIVE');
+portfolioController.put('/editTransaction',
+  body('transaction.coinId')
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage('ENTER_COIN_ID'),
+  body('transaction.coinPrice')
+    .trim()
+    .isFloat({ gt: 0 })
+    .withMessage('COIN_PRICE_NOT_POSITIVE'),
+  body('transaction.quantity')
+    .trim()
+    .isFloat({ gt: 0 })
+    .withMessage('QUANTITY_LEAST_ONES'),
+  async (req, res) => {
+    try {
+      await editTransaction(req.body.transaction, req.body.transactionId);
+
+      const result = await getDetailedTransactions(req.user.userId);
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(400).json({
+        message: errorParser(error)
+      });
     }
-
-    if (req.body.data.quantity <= 0) {
-      throw new Error('QUANTITY_LEAST_ONES');
-    }
-    await createTransaction(req.body.data, req.user.userId);
-
-    const result = await getDetailedTransactions(req.user.userId);
-    res.status(200).json(result);
-  } catch (error) {
-    res.status(400).json({
-      message: errorParser(error)
-    });
-  }
-});
-
-portfolioController.put('/editTransaction', async (req, res) => {
-  try {
-    if (req.body.transaction.coinId === '') {
-      throw new Error('ENTER_COIN_ID');
-    }
-
-    if (req.body.transaction.coinPrice <= 0) {
-      throw new Error('COIN_PRICE_NOT_POSITIVE');
-    }
-
-    if (req.body.transaction.quantity <= 0) {
-      throw new Error('QUANTITY_LEAST_ONES');
-    }
-    await editTransaction(req.body.transaction, req.body.transactionId);
-
-    const result = await getDetailedTransactions(req.user.userId);
-    res.status(200).json(result);
-  } catch (error) {
-    res.status(400).json({
-      message: errorParser(error)
-    });
-  }
-});
+  });
 
 portfolioController.delete('/removeTransaction', async (req, res) => {
   try {
     await deleteTransaction(req.query.transactionId);
-    res.status(200).end();
+    res.status(200).json({});
   } catch (error) {
     res.status(400).json({
       message: errorParser(error)
