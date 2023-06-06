@@ -8,208 +8,254 @@ const CMC_API_KEY = process.env.CMC_API_KEY;
 const cmcHeaders = { 'X-CMC_PRO_API_KEY': CMC_API_KEY };
 
 const cryptoApi = {
-	getGlobal: async () => {
-		const t = await axios.get(cgHost + 'global');
-		const data = t.data.data;
+  getGlobal: async () => {
+    const t = await axios.get(cgHost + 'global');
+    const data = t.data.data;
 
-		return {
-			total_market_cap: data.total_market_cap.usd,
-			market_cap_change_percentage_24h_usd: data.market_cap_change_percentage_24h_usd,
-			trading_volume: data.total_volume.usd,
-			btc_dominance: data.market_cap_percentage.btc,
-			number_of_coins: data.active_cryptocurrencies
-		};
-	},
+    return {
+      total_market_cap: data.total_market_cap.usd,
+      market_cap_change_percentage_24h_usd:
+        data.market_cap_change_percentage_24h_usd,
+      trading_volume: data.total_volume.usd,
+      btc_dominance: data.market_cap_percentage.btc,
+      number_of_coins: data.active_cryptocurrencies,
+    };
+  },
 
-	// decimal place for currency price value, default: 2
-	getCoin: async (coin, precision) => {
-		const t = await axios.get(cgHost + `simple/price?ids=${coin}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&precision=${Number(precision) | 2}`);
-		return t.data;
-	},
+  // decimal place for currency price value, default: 2
+  getCoin: async (coin, precision) => {
+    const t = await axios.get(
+      cgHost +
+        `simple/price?ids=${coin}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&precision=${
+          Number(precision) | 2
+        }`
+    );
+    return t.data;
+  },
 
-	getCoinDetailed: async (coin) => {
-		const t = await axios.get(cgHost + `coins/${coin}?localization=false&tickers=true&market_data=true&community_data=false&developer_data=false`);
-		const data = t.data;
-		const low_high_value = ((data.market_data.current_price.usd - data.market_data.low_24h.usd) * 100) / (data.market_data.high_24h.usd - data.market_data.low_24h.usd);
+  getCoinDetailed: async (coin) => {
+    const t = await axios.get(
+      cgHost +
+        `coins/${coin}?localization=false&tickers=true&market_data=true&community_data=false&developer_data=false`
+    );
+    const data = t.data;
+    const low_high_value =
+      ((data.market_data.current_price.usd - data.market_data.low_24h.usd) *
+        100) /
+      (data.market_data.high_24h.usd - data.market_data.low_24h.usd);
 
-		return {
-			id: data.id,
-			symbol: data.symbol,
-			name: data.name,
-			image: data.image,
-			current_price: data.market_data.current_price.usd,
-			market_cap: data.market_data.market_cap.usd,
-			total_volume: data.market_data.total_volume.usd,
-			high_24h: data.market_data.high_24h.usd,
-			low_24h: data.market_data.low_24h.usd,
-			low_high_value: low_high_value > 0 ? low_high_value : 0,
-			price_change_24h: data.market_data.price_change_24h,
-			price_change_percentage_24h: data.market_data.price_change_percentage_24h,
-			market_cap_change_24h: data.market_data.market_cap_change_24h,
-			market_cap_change_percentage_24h: data.market_data.market_cap_change_percentage_24h,
-			circulating_supply: data.market_data.circulating_supply,
-			total_supply: data.market_data.total_supply,
-			max_supply: data.market_data.max_supply,
-			ath: data.market_data.ath.usd,
-			ath_change_percentage: data.market_data.ath_change_percentage.usd,
-			ath_date: data.market_data.ath_date.usd,
-			atl: data.market_data.atl.usd,
-			atl_change_percentage: data.market_data.atl_change_percentage.usd,
-			atl_date: data.market_data.atl_date.usd,
-			last_updated: data.market_data.last_updated
-		};
-	},
+    return {
+      id: data.id,
+      symbol: data.symbol,
+      name: data.name,
+      image: data.image,
+      current_price: data.market_data.current_price.usd,
+      market_cap: data.market_data.market_cap.usd,
+      total_volume: data.market_data.total_volume.usd,
+      high_24h: data.market_data.high_24h.usd,
+      low_24h: data.market_data.low_24h.usd,
+      low_high_value: low_high_value > 0 ? low_high_value : 0,
+      price_change_24h: data.market_data.price_change_24h,
+      price_change_percentage_24h: data.market_data.price_change_percentage_24h,
+      market_cap_change_24h: data.market_data.market_cap_change_24h,
+      market_cap_change_percentage_24h:
+        data.market_data.market_cap_change_percentage_24h,
+      circulating_supply: data.market_data.circulating_supply,
+      total_supply: data.market_data.total_supply,
+      max_supply: data.market_data.max_supply,
+      ath: data.market_data.ath.usd,
+      ath_change_percentage: data.market_data.ath_change_percentage.usd,
+      ath_date: data.market_data.ath_date.usd,
+      atl: data.market_data.atl.usd,
+      atl_change_percentage: data.market_data.atl_change_percentage.usd,
+      atl_date: data.market_data.atl_date.usd,
+      last_updated: data.market_data.last_updated,
+    };
+  },
 
-	getCoinChartData: async (coin, days) => {
-		const t = await axios.get(cgHost + `coins/${coin}/market_chart?vs_currency=usd&days=${days}`);
-		const data = t.data.prices;
+  getCoinChartData: async (coin, days) => {
+    const t = await axios.get(
+      cgHost + `coins/${coin}/market_chart?vs_currency=usd&days=${days}`
+    );
+    const data = t.data.prices;
 
-		const chart = [];
-		data.forEach(v => {
-			chart.push({
-				time: v[0],
-				price: v[1]
-			});
-		});
+    const chart = [];
+    data.forEach((v) => {
+      chart.push({
+        time: v[0],
+        price: v[1],
+      });
+    });
 
-		return chart;
-	},
+    return chart;
+  },
 
-	getCoinOHLC: async (id, days) => {
-		const t = await axios.get(cgHost + `coins/${id}/ohlc?vs_currency=usd&days=${days || 1}`);
-		const chart = [];
+  getCoinOHLC: async (id, days) => {
+    const t = await axios.get(
+      cgHost + `coins/${id}/ohlc?vs_currency=usd&days=${days || 1}`
+    );
+		
+    const chartData = t.data.map((x) => {
+      return {
+        time: x[0] / 1000,
+        open: x[1],
+        high: x[2],
+        low: x[3],
+        close: x[4],
+      };
+    });
 
-		t.data.forEach(x => {
-			const time = x[0];
-			const open = x[1];
-			const high = x[2];
-			const low = x[3];
-			const close = x[4];
+    return chartData;
+  },
 
-			chart.push({
-				x: new Date(time),
-				y: [open, high, low, close]
-			});
-		});
+  getTopHundred: async (page = 1) => {
+    const t = await axios.get(
+      cgHost +
+        `coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=${page}&sparkline=false&price_change_percentage=1h%2C24h%2C7d`
+    );
 
-		return chart;
-	},
+    const data = [];
+    t.data.forEach((t) => {
+      data.push({
+        id: t.id,
+        name: t.name,
+        symbol: t.symbol,
+        total_supply: t.total_supply,
+        last_updated: t.last_updated,
+        current_price: t.current_price,
+        market_cap: t.market_cap,
+        price_change_percentage_1h_in_currency:
+          t.price_change_percentage_1h_in_currency,
+        price_change_percentage_24h_in_currency:
+          t.price_change_percentage_24h_in_currency,
+        price_change_percentage_7d_in_currency:
+          t.price_change_percentage_7d_in_currency,
+        image: t.image,
+      });
+    });
+    return data;
+  },
 
-	getTopHundred: async (page = 1) => {
-		const t = await axios.get(cgHost + `coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=${page}&sparkline=false&price_change_percentage=1h%2C24h%2C7d`);
+  newCoinsToday: async (page = 1) => {
+    const t = await axios.get(
+      cmcHostVOne +
+        `cryptocurrency/listings/latest?sort=date_added&start=${page}`,
+      { headers: cmcHeaders }
+    );
+    const coinData = t.data.data;
 
-		const data = [];
-		t.data.forEach((t) => {
-			data.push({
-				id: t.id,
-				name: t.name,
-				symbol: t.symbol,
-				total_supply: t.total_supply,
-				last_updated: t.last_updated,
-				current_price: t.current_price,
-				market_cap: t.market_cap,
-				price_change_percentage_1h_in_currency: t.price_change_percentage_1h_in_currency,
-				price_change_percentage_24h_in_currency: t.price_change_percentage_24h_in_currency,
-				price_change_percentage_7d_in_currency: t.price_change_percentage_7d_in_currency,
-				image: t.image,
-			});
-		});
-		return data;
-	},
+    const ids = [];
+    coinData.forEach((t) => {
+      ids.push(t.slug);
+    });
 
-	newCoinsToday: async (page = 1) => {
-		const t = await axios.get(cmcHostVOne + `cryptocurrency/listings/latest?sort=date_added&start=${page}`, { 'headers': cmcHeaders });
-		const coinData = t.data.data;
+    let coinMetaData = await axios.get(
+      cmcHostVTwo + `cryptocurrency/info?slug=${ids.join(',')}&aux=logo`,
+      { headers: cmcHeaders }
+    );
+    coinMetaData = coinMetaData.data.data;
+    coinMetaData = Object.values(coinMetaData);
+    coinMetaData = coinMetaData.reverse();
 
-		const ids = [];
-		coinData.forEach((t) => {
-			ids.push(t.slug);
-		});
+    const res = [];
+    for (let i = 0; i < ids.length; i++) {
+      res.push({
+        id: coinData[i].slug,
+        name: coinData[i].name,
+        symbol: coinData[i].symbol.toLowerCase(),
+        total_supply: coinData[i].total_supply,
+        last_updated: coinData[i].last_updated,
+        current_price: coinData[i].quote.USD.price,
+        market_cap: coinData[i].self_reported_market_cap,
+        price_change_percentage_1h_in_currency:
+          coinData[i].quote.USD.percent_change_1h,
+        price_change_percentage_24h_in_currency:
+          coinData[i].quote.USD.percent_change_24h,
+        price_change_percentage_7d_in_currency:
+          coinData[i].quote.USD.percent_change_7d,
+        image: coinMetaData[i].logo,
+      });
+    }
 
-		let coinMetaData = await axios.get(cmcHostVTwo + `cryptocurrency/info?slug=${ids.join(',')}&aux=logo`, { 'headers': cmcHeaders });
-		coinMetaData = coinMetaData.data.data;
-		coinMetaData = Object.values(coinMetaData);
-		coinMetaData = coinMetaData.reverse();
+    return res;
+  },
 
-		const res = [];
-		for (let i = 0; i < ids.length; i++) {
-			res.push({
-				id: coinData[i].slug,
-				name: coinData[i].name,
-				symbol: coinData[i].symbol.toLowerCase(),
-				total_supply: coinData[i].total_supply,
-				last_updated: coinData[i].last_updated,
-				current_price: coinData[i].quote.USD.price,
-				market_cap: coinData[i].self_reported_market_cap,
-				price_change_percentage_1h_in_currency: coinData[i].quote.USD.percent_change_1h,
-				price_change_percentage_24h_in_currency: coinData[i].quote.USD.percent_change_24h,
-				price_change_percentage_7d_in_currency: coinData[i].quote.USD.percent_change_7d,
-				image: coinMetaData[i].logo
-			});
-		}
+  getListCoins: async () => {
+    const t = await axios.get(cgHost + 'coins/list?include_platform=false');
+    return t.data;
+  },
 
-		return res;
-	},
+  search: async (query) => {
+    let t = await axios.get(`${cgHost}search?query=${query}`);
+    return t.data.coins;
+  },
 
-	getListCoins: async () => {
-		const t = await axios.get(cgHost + 'coins/list?include_platform=false');
-		return t.data;
-	},
+  getTopThree: async () => {
+    const temp = await cryptoApi.getTopHundred();
+    const stableCoinsIds = [
+      'tether',
+      'usd-coin',
+      'binance-usd',
+      'dai',
+      'paxos-standard',
+      'true-usd',
+      'usdd',
+    ];
+    const res = [];
 
-	search: async (query) => {
-		let t = await axios.get(`${cgHost}search?query=${query}`);
-		return t.data.coins;
-	},
+    while (res.length != 3) {
+      const tempCoin = temp.shift();
+      if (!stableCoinsIds.includes(tempCoin.id)) {
+        res.push(tempCoin);
+      }
+    }
 
-	getTopThree: async () => {
-		const temp = await cryptoApi.getTopHundred();
-		const stableCoinsIds = ['tether', 'usd-coin', 'binance-usd', 'dai', 'paxos-standard', 'true-usd', 'usdd'];
-		const res = [];
+    return res;
+  },
 
-		while (res.length != 3) {
-			const tempCoin = temp.shift();
-			if (!stableCoinsIds.includes(tempCoin.id)) {
-				res.push(tempCoin);
-			}
-		}
+  cryptoMap: async () => {
+    const t = await axios.get(
+      cmcHostVOne + 'cryptocurrency/map?sort=cmc_rank',
+      { headers: cmcHeaders }
+    );
+    const arr = [];
+    t.data.data.forEach((e) => {
+      const res = {
+        id: e.id,
+        name: e.name,
+        slug: e.slug,
+        symbol: e.symbol,
+      };
+      arr.push(res);
+    });
+    return arr;
+  },
 
-		return res;
-	},
+  fiatMap: async () => {
+    const t = await axios.get(cmcHostVOne + 'fiat/map', {
+      headers: cmcHeaders,
+    });
+    const arr = [];
+    t.data.data.forEach((e) => {
+      const res = {
+        id: e.id,
+        name: e.name,
+        sign: e.sign,
+        symbol: e.symbol,
+      };
+      arr.push(res);
+    });
+    return arr;
+  },
 
-	cryptoMap: async () => {
-		const t = await axios.get(cmcHostVOne + 'cryptocurrency/map?sort=cmc_rank', { 'headers': cmcHeaders });
-		const arr = [];
-		t.data.data.forEach(e => {
-			const res = {
-				id: e.id,
-				name: e.name,
-				slug: e.slug,
-				symbol: e.symbol
-			};
-			arr.push(res);
-		});
-		return arr;
-	},
-
-	fiatMap: async () => {
-		const t = await axios.get(cmcHostVOne + 'fiat/map', { 'headers': cmcHeaders });
-		const arr = [];
-		t.data.data.forEach(e => {
-			const res = {
-				id: e.id,
-				name: e.name,
-				sign: e.sign,
-				symbol: e.symbol
-			};
-			arr.push(res);
-		});
-		return arr;
-	},
-
-	convert: async (amount, fromCurrency, toCurrency) => {
-		const t = await axios.get(cmcHostVTwo + `tools/price-conversion?amount=${amount}&id=${fromCurrency}&convert_id=${toCurrency}`, { 'headers': cmcHeaders });
-		return t.data.data;
-	}
+  convert: async (amount, fromCurrency, toCurrency) => {
+    const t = await axios.get(
+      cmcHostVTwo +
+        `tools/price-conversion?amount=${amount}&id=${fromCurrency}&convert_id=${toCurrency}`,
+      { headers: cmcHeaders }
+    );
+    return t.data.data;
+  },
 };
 
 module.exports = cryptoApi;

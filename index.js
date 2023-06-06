@@ -30,7 +30,7 @@ async function start() {
 	});
 
 	connectToDB.then(() => {
-		app.listen(EXPRESS_PORT, () => console.log('App listening on port: ' + EXPRESS_PORT));
+		app.listen(EXPRESS_PORT, () => console.log('Crypto service listening on port: ' + EXPRESS_PORT));
 	});
 }
 
