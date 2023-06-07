@@ -11916,7 +11916,7 @@ const dummyCryptoMap = [
   },
   {
     id: 2889,
-    name: "Bob's Repair",
+    name: 'Bob\'s Repair',
     slug: 'bobs-repair',
     symbol: 'BOB',
   },
@@ -20622,7 +20622,7 @@ const dummyCryptoMap = [
   },
   {
     id: 18439,
-    name: "JPEG'd",
+    name: 'JPEG\'d',
     slug: 'jpeg-d',
     symbol: 'JPEG',
   },
@@ -22230,7 +22230,7 @@ const dummyCryptoMap = [
   },
   {
     id: 23701,
-    name: "McPepe's",
+    name: 'McPepe\'s',
     slug: 'mcpepes',
     symbol: 'PEPES',
   },
@@ -22326,7 +22326,7 @@ const dummyCryptoMap = [
   },
   {
     id: 23422,
-    name: "FTX Users' Debt",
+    name: 'FTX Users\' Debt',
     slug: 'ftx-users-debt',
     symbol: 'FUD',
   },
@@ -26100,7 +26100,7 @@ const dummyCryptoMap = [
   },
   {
     id: 14978,
-    name: "Let's Go Brandon Token",
+    name: 'Let\'s Go Brandon Token',
     slug: 'letsgobrandontoken',
     symbol: 'LGBT',
   },
@@ -27072,7 +27072,7 @@ const dummyCryptoMap = [
   },
   {
     id: 22502,
-    name: "Don't Buy Inu",
+    name: 'Don\'t Buy Inu',
     slug: 'don-t-buy-inu',
     symbol: 'DBI',
   },
@@ -34512,7 +34512,7 @@ const dummyCryptoMap = [
   },
   {
     id: 24098,
-    name: "The People's Coin",
+    name: 'The People\'s Coin',
     slug: 'the-peoples-coin-v2',
     symbol: 'PEEP$',
   },
@@ -49146,7 +49146,7 @@ const dummyCryptoMap = [
   },
   {
     id: 12697,
-    name: "Elon's Marvin",
+    name: 'Elon\'s Marvin',
     slug: 'elons-marvin',
     symbol: 'MARVIN',
   },
@@ -56286,7 +56286,7 @@ const dummyCryptoMap = [
   },
   {
     id: 15515,
-    name: "STMAN | Stickman's Battleground NFT Game",
+    name: 'STMAN | Stickman\'s Battleground NFT Game',
     slug: 'stman-stickmans-battleground-nft-game',
     symbol: 'STMAN',
   },
@@ -58608,7 +58608,7 @@ const dummyCryptoMap = [
   },
   {
     id: 21026,
-    name: "Noah's Ark Coin",
+    name: 'Noah\'s Ark Coin',
     slug: 'noah-s-ark-coin',
     symbol: 'NAC',
   },
@@ -61174,7 +61174,7 @@ const dummyFiatMap = [
   {
     id: 3572,
     name: 'Uzbekistan Som',
-    sign: "so'm",
+    sign: 'so\'m',
     symbol: 'UZS',
   },
   {
@@ -68214,7 +68214,7 @@ const dummyAllCoins = [
   {
     id: 'bobs_repair',
     symbol: 'bob',
-    name: "Bob's Repair",
+    name: 'Bob\'s Repair',
   },
   {
     id: 'bob-token',
@@ -75734,7 +75734,7 @@ const dummyAllCoins = [
   {
     id: 'don-t-buy-inu',
     symbol: 'dbi',
-    name: "Don't Buy Inu",
+    name: 'Don\'t Buy Inu',
   },
   {
     id: 'donut',
@@ -76014,7 +76014,7 @@ const dummyAllCoins = [
   {
     id: 'dragons-quick',
     symbol: 'dquick',
-    name: "Dragon's Quick",
+    name: 'Dragon\'s Quick',
   },
   {
     id: 'dragonvein',
@@ -76999,7 +76999,7 @@ const dummyAllCoins = [
   {
     id: 'elons-marvin',
     symbol: 'marvin',
-    name: "Elon's Marvin",
+    name: 'Elon\'s Marvin',
   },
   {
     id: 'elpis-battle',
@@ -79944,7 +79944,7 @@ const dummyAllCoins = [
   {
     id: 'ftx-users-debt',
     symbol: 'fud',
-    name: "FTX Users' Debt",
+    name: 'FTX Users\' Debt',
   },
   {
     id: 'ftx-wormhole',
@@ -83549,7 +83549,7 @@ const dummyAllCoins = [
   {
     id: 'hot-n-cold-finance',
     symbol: 'hnc',
-    name: "Hot'n Cold Finance",
+    name: 'Hot\'n Cold Finance',
   },
   {
     id: 'hourglass',
@@ -85694,7 +85694,7 @@ const dummyAllCoins = [
   {
     id: 'jpeg-d',
     symbol: 'jpeg',
-    name: "JPEG'd",
+    name: 'JPEG\'d',
   },
   {
     id: 'jpegvaultdao-2',
@@ -89854,7 +89854,7 @@ const dummyAllCoins = [
   {
     id: 'mcpepe-s',
     symbol: 'pepes',
-    name: "McPepe's",
+    name: 'McPepe\'s',
   },
   {
     id: 'mcverse',
@@ -94109,7 +94109,7 @@ const dummyAllCoins = [
   {
     id: 'noah-s-ark-coin',
     symbol: 'nac',
-    name: "Noah's Ark Coin",
+    name: 'Noah\'s Ark Coin',
   },
   {
     id: 'noa-play',
@@ -96684,7 +96684,7 @@ const dummyAllCoins = [
   {
     id: 'peoples-punk',
     symbol: 'dddd',
-    name: "People's Punk",
+    name: 'People\'s Punk',
   },
   {
     id: 'peoplez',

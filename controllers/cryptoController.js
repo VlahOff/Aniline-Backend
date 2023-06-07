@@ -9,7 +9,7 @@ cryptoController.get('/topThree', async (req, res) => {
     res.status(200).json(response);
   } catch (error) {
     let statusCode = 400;
-    if (error.response.status) {
+    if (error.response?.status) {
       statusCode = error.response.status;
     }
 
@@ -27,7 +27,7 @@ cryptoController.get('/topHundred', async (req, res) => {
     res.status(200).json(response);
   } catch (error) {
     let statusCode = 400;
-    if (error.response.status) {
+    if (error.response?.status) {
       statusCode = error.response.status;
     }
 
@@ -45,7 +45,7 @@ cryptoController.get('/newCoins', async (req, res) => {
     res.status(200).json(response);
   } catch (error) {
     let statusCode = 400;
-    if (error.response.status) {
+    if (error.response?.status) {
       statusCode = error.response.status;
     }
 
@@ -61,7 +61,7 @@ cryptoController.get('/cryptoMap', async (req, res) => {
     res.status(200).json(response);
   } catch (error) {
     let statusCode = 400;
-    if (error.response.status) {
+    if (error.response?.status) {
       statusCode = error.response.status;
     }
 
@@ -77,7 +77,7 @@ cryptoController.get('/fiatMap', async (req, res) => {
     res.status(200).json(response);
   } catch (error) {
     let statusCode = 400;
-    if (error.response.status) {
+    if (error.response?.status) {
       statusCode = error.response.status;
     }
 
@@ -93,7 +93,7 @@ cryptoController.get('/allCoins', async (req, res) => {
     res.status(200).json(response);
   } catch (error) {
     let statusCode = 400;
-    if (error.response.status) {
+    if (error.response?.status) {
       statusCode = error.response.status;
     }
 
@@ -109,7 +109,7 @@ cryptoController.get('/convert', async (req, res) => {
     res.status(200).json(response);
   } catch (error) {
     let statusCode = 400;
-    if (error.response.status) {
+    if (error.response?.status) {
       statusCode = error.response.status;
     }
 
@@ -125,7 +125,7 @@ cryptoController.get('/getGlobalData', async (req, res) => {
     res.status(200).json(response);
   } catch (error) {
     let statusCode = 400;
-    if (error.response.status) {
+    if (error.response?.status) {
       statusCode = error.response.status;
     }
 
@@ -141,7 +141,7 @@ cryptoController.get('/getCoinDetails', async (req, res) => {
     res.status(200).json(response);
   } catch (error) {
     let statusCode = 400;
-    if (error.response.status) {
+    if (error.response?.status) {
       statusCode = error.response.status;
     }
 
@@ -157,7 +157,7 @@ cryptoController.get('/getCoinChartData', async (req, res) => {
     res.status(200).json({ chartData: response });
   } catch (error) {
     let statusCode = 400;
-    if (error.response.status) {
+    if (error.response?.status) {
       statusCode = error.response.status;
     }
 
@@ -189,7 +189,7 @@ cryptoController.post('/search', async (req, res) => {
     res.status(200).json(response);
   } catch (error) {
     let statusCode = 400;
-    if (error.response.status) {
+    if (error.response?.status) {
       statusCode = error.response.status;
     }
 
