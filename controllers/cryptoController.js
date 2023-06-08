@@ -183,9 +183,9 @@ cryptoController.get('/getCoinOHLC', async (req, res) => {
   }
 });
 
-cryptoController.post('/search', async (req, res) => {
+cryptoController.get('/search', async (req, res) => {
   try {
-    const response = await cryptoApi.search(req.body.query);
+    const response = await cryptoApi.search(req.query.query);
     res.status(200).json(response);
   } catch (error) {
     let statusCode = 400;
