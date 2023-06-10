@@ -1,4 +1,7 @@
-require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config({
+  path: process.env.npm_command === 'start' ? '.env' : '.env.development',
+});
 
 const express = require('express');
 const databaseConfig = require('./configs/database');
@@ -14,24 +17,26 @@ const portfolioController = require('./controllers/portfolioController');
 const EXPRESS_PORT = process.env.EXPRESS_PORT;
 
 async function start() {
-	const app = express();
-	const connectToDB = databaseConfig();
+  const app = express();
+  const connectToDB = databaseConfig();
 
-	app.use(cors());
-	app.use(express.json());
-	app.use(tokenParser());
+  app.use(cors());
+  app.use(express.json());
+  app.use(tokenParser());
 
-	app.use('/crypto', cryptoController);
-	app.use('/devCrypto', devCryptoController);
-	app.use('/portfolio', isAuthenticated(), portfolioController);
+  app.use('/crypto', cryptoController);
+  app.use('/devCrypto', devCryptoController);
+  app.use('/portfolio', isAuthenticated(), portfolioController);
 
-	app.get('/', (req, res) => {
-		res.status(200).send('It works!');
-	});
+  app.get('/', (req, res) => {
+    res.status(200).send('It works!');
+  });
 
-	connectToDB.then(() => {
-		app.listen(EXPRESS_PORT, () => console.log('Crypto service listening on port: ' + EXPRESS_PORT));
-	});
+  connectToDB.then(() => {
+    app.listen(EXPRESS_PORT, () =>
+      console.log('Crypto service listening on port: ' + EXPRESS_PORT)
+    );
+  });
 }
 
 start();
