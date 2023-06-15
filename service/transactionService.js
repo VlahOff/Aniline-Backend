@@ -9,21 +9,24 @@ async function createTransaction(data, userId) {
     coinId: data.coinId,
     coinPrice: data.coinPrice,
     quantity: data.quantity,
-    owner: userId
+    owner: userId,
   });
 
   return transaction;
 }
 
 async function editTransaction(data, transactionId) {
-  const transaction = {
-    coinId: data.coinId,
-    coinPrice: data.boughtPrice,
-    quantity: data.quantity
-  };
-  await Transaction.findByIdAndUpdate(transactionId, transaction);
+  const transaction = await Transaction.findByIdAndUpdate(
+    transactionId,
+    {
+      coinId: data.coinId,
+      coinPrice: data.boughtPrice,
+      quantity: data.quantity,
+    },
+    { new: true }
+  );
 
-  return await Transaction.findById(transactionId);
+  return transaction;
 }
 
 async function deleteTransaction(transactionId) {
@@ -34,5 +37,5 @@ module.exports = {
   getAllUserTransactions,
   createTransaction,
   editTransaction,
-  deleteTransaction
+  deleteTransaction,
 };
