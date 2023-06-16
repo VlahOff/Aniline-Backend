@@ -1,4 +1,4 @@
-module.exports = (error) => {
+module.exports = error => {
 	console.log(error);
 	if (Array.isArray(error)) {
 		const res = error.map(e => e.msg);
