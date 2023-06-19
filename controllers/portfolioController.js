@@ -1,3 +1,6 @@
+const portfolioController = require('express').Router();
+const { body, validationResult, query } = require('express-validator');
+
 const { getCoinDetailed } = require('../api/cryptoApi');
 const {
 	createTransaction,
@@ -6,9 +9,6 @@ const {
 	editTransaction,
 } = require('../service/transactionService');
 const errorParser = require('../utils/errorParser');
-const { body, validationResult } = require('express-validator');
-
-const portfolioController = require('express').Router();
 
 portfolioController.get('/getTransactions', async (req, res) => {
 	try {
@@ -56,6 +56,7 @@ portfolioController.post(
 
 portfolioController.put(
 	'/editTransaction',
+	body('transactionId').trim().isMongoId().withMessage('NO_TRANSACTION_ID'),
 	body('transaction.coinId')
 		.trim()
 		.isLength({ min: 1 })
@@ -70,6 +71,11 @@ portfolioController.put(
 		.withMessage('QUANTITY_LEAST_ONES'),
 	async (req, res) => {
 		try {
+			const { errors } = validationResult(req);
+			if (errors.length > 0) {
+				throw errors;
+			}
+
 			await editTransaction(req.body.transaction, req.body.transactionId);
 
 			const result = await getDetailedTransactions(req.user.userId);
@@ -82,16 +88,25 @@ portfolioController.put(
 	}
 );
 
-portfolioController.delete('/removeTransaction', async (req, res) => {
-	try {
-		await deleteTransaction(req.query.transactionId);
-		res.status(200).json({});
-	} catch (error) {
-		res.status(400).json({
-			message: errorParser(error),
-		});
+portfolioController.delete(
+	'/removeTransaction',
+	query('transactionId').trim().isMongoId().withMessage('NO_TRANSACTION_ID'),
+	async (req, res) => {
+		try {
+			const { errors } = validationResult(req);
+			if (errors.length > 0) {
+				throw errors;
+			}
+
+			await deleteTransaction(req.query.transactionId);
+			res.status(200).json({});
+		} catch (error) {
+			res.status(400).json({
+				message: errorParser(error),
+			});
+		}
 	}
-});
+);
 
 async function getDetailedTransactions(userId) {
 	const transactions = await getAllUserTransactions(userId);

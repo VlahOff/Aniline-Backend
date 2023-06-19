@@ -33,10 +33,10 @@ const cryptoApi = {
 		return t.data;
 	},
 
-	getCoinDetailed: async coin => {
+	getCoinDetailed: async coinId => {
 		const t = await axios.get(
 			cgHost +
-				`coins/${coin}?localization=false&tickers=true&market_data=true&community_data=false&developer_data=false`
+				`coins/${coinId}?localization=false&tickers=true&market_data=true&community_data=false&developer_data=false`
 		);
 		const data = t.data;
 		const low_high_value =
@@ -73,9 +73,9 @@ const cryptoApi = {
 		};
 	},
 
-	getCoinChartData: async (coin, days) => {
+	getCoinChartData: async (coinId, days) => {
 		const t = await axios.get(
-			cgHost + `coins/${coin}/market_chart?vs_currency=usd&days=${days}`
+			cgHost + `coins/${coinId}/market_chart?vs_currency=usd&days=${days}`
 		);
 		const data = t.data.prices;
 
@@ -90,9 +90,9 @@ const cryptoApi = {
 		return chart;
 	},
 
-	getCoinOHLC: async (id, days) => {
+	getCoinOHLC: async (coinId, days) => {
 		const t = await axios.get(
-			cgHost + `coins/${id}/ohlc?vs_currency=usd&days=${days || 1}`
+			cgHost + `coins/${coinId}/ohlc?vs_currency=usd&days=${days || 1}`
 		);
 
 		const chartData = t.data.map(x => {
@@ -145,17 +145,13 @@ const cryptoApi = {
 		const coinData = t.data.data;
 
 		const ids = [];
-		coinData.forEach(t => {
-			ids.push(t.slug);
-		});
+		coinData.forEach(t => ids.push(t.slug));
 
 		let coinMetaData = await axios.get(
 			cmcHostVTwo + `cryptocurrency/info?slug=${ids.join(',')}&aux=logo`,
 			{ headers: cmcHeaders }
 		);
-		coinMetaData = coinMetaData.data.data;
-		coinMetaData = Object.values(coinMetaData);
-		coinMetaData = coinMetaData.reverse();
+		coinMetaData = Object.values(coinMetaData.data.data).reverse();
 
 		const res = [];
 		for (let i = 0; i < ids.length; i++) {
@@ -218,6 +214,7 @@ const cryptoApi = {
 			cmcHostVOne + 'cryptocurrency/map?sort=cmc_rank',
 			{ headers: cmcHeaders }
 		);
+
 		const arr = [];
 		t.data.data.forEach(e => {
 			const res = {
