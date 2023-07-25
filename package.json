@@ -23,5 +23,8 @@
     "arrowParens": "avoid",
     "singleAttributePerLine": true,
     "useTabs": true
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }

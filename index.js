@@ -1,17 +1,15 @@
 require('dotenv').config();
-
 const express = require('express');
 const databaseConfig = require('./configs/database');
 
 const tokenParser = require('./middlewares/tokenParser');
 const { isAuthenticated } = require('./middlewares/guards');
 const cors = require('./middlewares/cors');
+const EXPRESS_PORT = process.env.EXPRESS_PORT;
 
 const cryptoController = require('./controllers/cryptoController');
 const devCryptoController = require('./controllers/devCryptoController');
 const portfolioController = require('./controllers/portfolioController');
-
-const EXPRESS_PORT = process.env.EXPRESS_PORT;
 
 async function start() {
 	const app = express();
